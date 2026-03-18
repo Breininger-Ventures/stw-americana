@@ -1,0 +1,2842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Small Town Windows — Northwest Ohio's Trusted Window Installer</title>
+  <meta name="description" content="Custom energy-efficient windows installed with craftsman precision. Serving Defiance, Bryan, Hicksville, Paulding, Napoleon and all of Northwest Ohio. Call (419) 231-0111.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Teko:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- favicon placeholder -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪟</text></svg>">
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+       ============================================================ */
+    :root {
+      --navy:       #1B2A4A;
+      --navy-dark:  #0F1A2E;
+      --red:        #C0392B;
+      --gold:       #D4AF37;
+      --white:      #F5F0E8;
+      --off:        #EDE8DC;
+      --slate:      #8090A8;
+      --ink:        #1A1A2E;
+      --near-black: #1A1008;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--white);
+      color: var(--ink);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* ============================================================
+       ANIMATION SYSTEM — BASE STYLES
+       ============================================================ */
+
+    /* Scroll reveal */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    [data-reveal].revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    [data-reveal]:nth-child(2) { transition-delay: 0.1s; }
+    [data-reveal]:nth-child(3) { transition-delay: 0.2s; }
+    [data-reveal]:nth-child(4) { transition-delay: 0.3s; }
+
+    /* Slide-from-left variant for services */
+    [data-reveal-left] {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    [data-reveal-left].revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    [data-reveal-left]:nth-child(1) { transition-delay: 0.0s; }
+    [data-reveal-left]:nth-child(2) { transition-delay: 0.12s; }
+    [data-reveal-left]:nth-child(3) { transition-delay: 0.24s; }
+
+    /* Hero word march */
+    .word {
+      overflow: hidden;
+      display: block;
+      line-height: 1.05;
+    }
+    .word-inner {
+      display: block;
+      color: var(--white);
+      transform: translateY(100%);
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .word-inner.red  { color: var(--red); }
+    .word-inner.gold { color: var(--gold); }
+
+    /* Hero element initial states for load sequence */
+    .hero-eyebrow,
+    .hero-sub,
+    .hero-ctas,
+    .hero-photo-wrap,
+    .hero-trust { opacity: 0; transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+    .hero-photo-wrap { transform: translateX(24px); }
+    .hero-trust { transform: translateY(12px); }
+
+    #hero-stamp {
+      transform: scale(0) rotate(-20deg);
+      opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1),
+                  opacity 0.3s ease;
+    }
+    .hero-rule { width: 0; transition: width 1.4s cubic-bezier(0.16,1,0.3,1); }
+    .hero-rule.wiped { width: 100%; }
+
+    /* CTA pulse rings */
+    .cta-wrap { position: relative; display: inline-flex; }
+    .pulse-ring, .pulse-ring-2 {
+      position: absolute;
+      inset: -8px;
+      border: 2px solid var(--red);
+      border-radius: 4px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .pulse-ring-2 { border-color: var(--gold); }
+    .pulse-active .pulse-ring  { animation: pulse-out 3s ease-in-out infinite 2s; }
+    .pulse-active .pulse-ring-2 { animation: pulse-out 3s ease-in-out infinite 2.5s; }
+
+    @keyframes pulse-out {
+      0%   { inset: -4px; opacity: 0.6; }
+      100% { inset: -20px; opacity: 0; }
+    }
+
+    /* Promise section stripe wipe */
+    .section-promise { position: relative; overflow: hidden; }
+    .section-promise::before {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 0; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06));
+      transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .section-promise.wiped::before { width: 100%; }
+
+    /* Portfolio card hover */
+    .port-item { overflow: hidden; position: relative; cursor: pointer; }
+    .port-bg {
+      width: 100%; height: 100%;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), filter 0.3s;
+    }
+    .port-item:hover .port-bg {
+      transform: scale(1.04);
+      filter: brightness(1.15);
+    }
+    .port-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(15,26,46,0.92) 0%, rgba(15,26,46,0.4) 60%, transparent 100%);
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 20px 18px;
+    }
+    .port-item:hover .port-overlay { transform: translateY(0); }
+
+    .port-flag {
+      position: absolute; top: 10px; right: 10px;
+      width: 18px; border-radius: 1px;
+      overflow: hidden;
+      opacity: 0; transform: translateY(-6px);
+      transition: opacity 0.25s 0.1s, transform 0.25s 0.1s;
+    }
+    .port-item:hover .port-flag { opacity: 1; transform: translateY(0); }
+    .port-flag-stripe {
+      height: 4px;
+      width: 100%;
+    }
+    .port-flag-stripe:nth-child(odd)  { background: var(--red); }
+    .port-flag-stripe:nth-child(even) { background: var(--white); }
+
+    /* Keyframes */
+    @keyframes shimmer {
+      0%   { left: -120%; }
+      100% { left: 150%; }
+    }
+
+    /* ============================================================
+       BUTTONS
+       ============================================================ */
+    .btn-primary {
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border: none;
+      border-bottom: 3px solid rgba(0,0,0,0.22);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      text-align: center;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute; top: 0; left: -120%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+    }
+    .btn-primary:hover::before { animation: shimmer 0.6s ease forwards; }
+    .btn-primary:active { transform: translateY(1px); }
+
+    .btn-ghost-navy {
+      border: 2px solid var(--navy-dark);
+      color: var(--navy-dark);
+      background: transparent;
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 2px;
+      cursor: pointer;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-ghost-red {
+      border: 2px solid var(--red);
+      color: var(--red);
+      background: transparent;
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 2px;
+      cursor: pointer;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-text {
+      background: none;
+      border: none;
+      color: var(--red);
+      font-family: 'Teko', sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: gap 0.2s;
+      cursor: pointer;
+    }
+    .btn-text:hover { gap: 14px; }
+
+    /* ============================================================
+       SECTION TAG / EYEBROW
+       ============================================================ */
+    .section-tag {
+      font-family: 'Teko', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .section-tag.gold { color: var(--gold); }
+    .section-tag.red  { color: var(--red); }
+    .section-tag.slate { color: var(--slate); }
+
+    /* ============================================================
+       HEADINGS
+       ============================================================ */
+    h1, h2, h3 {
+      font-family: 'Fjalla One', sans-serif;
+      text-transform: uppercase;
+      line-height: 1.05;
+    }
+    h2 { font-size: 36px; }
+    h2 em {
+      font-style: normal;
+      color: var(--red);
+    }
+
+    /* ============================================================
+       CUSTOM CURSOR — DESKTOP ONLY
+       ============================================================ */
+    @media (pointer: fine) {
+      * { cursor: none; }
+    }
+    @media (pointer: coarse) {
+      #cur-dot, #cur-ring { display: none; }
+    }
+
+    #cur-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%,-50%);
+      opacity: 0;
+      transition: transform 0.12s ease, opacity 0.3s;
+    }
+    #cur-ring {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(212,175,55,0.5);
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%,-50%);
+      opacity: 0;
+      transition: opacity 0.3s, width 0.2s, height 0.2s, border-color 0.2s;
+    }
+
+    /* ============================================================
+       MOBILE MENU OVERLAY — SECTION 01
+       ============================================================ */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--navy-dark);
+      z-index: 200;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+    }
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 34px;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    .mobile-menu-phone {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 22px;
+      color: var(--gold);
+    }
+
+    .mobile-menu-cta {
+      background: var(--red) !important;
+      color: var(--white) !important;
+      font-family: 'Fjalla One', sans-serif !important;
+      font-size: 18px !important;
+      padding: 14px 36px;
+      border-radius: 2px;
+      border-bottom: 3px solid rgba(0,0,0,0.22);
+      letter-spacing: 0.08em !important;
+    }
+
+    .mobile-menu-close {
+      position: absolute;
+      top: 24px; right: 24px;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 40px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 8px;
+      min-width: 48px; min-height: 48px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mobile-menu-close:hover { color: var(--gold); }
+
+    /* ============================================================
+       NAVIGATION — SECTION 02
+       ============================================================ */
+    .nav {
+      background: var(--navy-dark);
+      border-bottom: 4px solid var(--red);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 62px;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 18px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Hamburger (mobile) */
+    .nav-hamburger {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      min-width: 48px; min-height: 48px;
+      justify-content: center;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--white);
+      border-radius: 1px;
+    }
+
+    /* Logo */
+    .nav-logo-wrap { text-align: center; }
+    .nav-logo {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 22px;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+    }
+    .nav-logo em {
+      color: var(--gold);
+      font-style: normal;
+    }
+    .nav-logo-rule {
+      height: 2px;
+      background: linear-gradient(90deg, var(--red), var(--white) 50%, var(--navy));
+      opacity: 0.5;
+      margin-top: 2px;
+    }
+    .nav-logo-sub {
+      font-family: 'Teko', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: rgba(245,240,232,0.3);
+      display: none;
+    }
+
+    /* Mobile nav CTA */
+    .nav-mobile-cta {
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 2px;
+      border-bottom: 2px solid rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-mobile-cta::before {
+      content: '';
+      position: absolute; top: 0; left: -120%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+    }
+    .nav-mobile-cta:hover::before { animation: shimmer 0.6s ease forwards; }
+
+    /* Desktop nav links — hidden on mobile */
+    .nav-links { display: none; }
+    .nav-right  { display: none; }
+
+    /* ============================================================
+       HERO — SECTION 03
+       ============================================================ */
+    .hero {
+      background: var(--navy-dark);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Photo on top for mobile */
+    .hero-photo-wrap {
+      width: 100%;
+      height: 56vw;
+      min-height: 260px;
+      max-height: 400px;
+      position: relative;
+      background: linear-gradient(160deg, #243050 0%, #0F1520 100%);
+      overflow: visible;
+      flex-shrink: 0;
+    }
+
+    .hero-photo-inner {
+      position: absolute; inset: 28px;
+      border: 1.5px solid rgba(245,240,232,0.06);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-photo-label {
+      font-family: 'Teko', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: rgba(245,240,232,0.18);
+      text-transform: uppercase;
+      text-align: center;
+      padding: 16px;
+    }
+    /* Replace with real photo:
+       <img src="images/hero-photo.jpg" alt="Window installation by Small Town Windows in Northwest Ohio"> */
+
+    /* Stamp */
+    #hero-stamp {
+      position: absolute;
+      bottom: 20px; left: 14px;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--red);
+      border: 3px solid var(--gold);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      gap: 2px;
+      padding: 6px;
+      z-index: 5;
+    }
+    .stamp-stars {
+      font-size: 9px;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+    .stamp-text {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 10px;
+      color: var(--white);
+      text-transform: uppercase;
+      line-height: 1.15;
+    }
+
+    /* Content block */
+    .hero-content {
+      background: var(--navy-dark);
+      padding: 88px 18px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Star canton */
+    .hero-canton {
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+      width: 120px; height: 100px;
+      background: var(--navy);
+      opacity: 0.15;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: center;
+      justify-items: center;
+      font-size: 11px;
+      color: rgba(245,240,232,0.5);
+      padding: 8px;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Right-edge stripes */
+    .hero-stripes {
+      position: absolute;
+      top: 0; right: 0;
+      bottom: 0;
+      display: flex;
+      width: 80px;
+      pointer-events: none;
+    }
+    .hero-stripe {
+      flex: 1;
+      height: 100%;
+    }
+    .hero-stripe:nth-child(odd)  { background: var(--red); opacity: 0.18; }
+    .hero-stripe:nth-child(even) { background: rgba(245,240,232,0.08); }
+
+    /* Eyebrow */
+    .hero-eyebrow {
+      font-family: 'Teko', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(212,175,55,0.7);
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* H1 */
+    .hero-h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Sub */
+    .hero-sub {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 14px;
+      line-height: 1.8;
+      color: rgba(245,240,232,0.65);
+      max-width: 480px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* CTAs */
+    .hero-ctas {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-ctas .btn-primary,
+    .hero-ctas .btn-ghost-red { width: 100%; text-align: center; }
+
+    /* Hero RWB rule */
+    .hero-rule {
+      height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--white) 50%, var(--navy));
+      margin-top: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Trust row (mobile — pinned to bottom of content) */
+    .hero-trust {
+      display: flex;
+      gap: 24px;
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      z-index: 1;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .hero-trust::-webkit-scrollbar { display: none; }
+
+    .hero-stat {
+      flex-shrink: 0;
+      text-align: center;
+    }
+    .hero-stat-num {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 22px;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-family: 'Teko', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.35);
+      white-space: nowrap;
+    }
+
+    .hero-stat-sep {
+      width: 1px;
+      background: rgba(255,255,255,0.08);
+      align-self: stretch;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       ABOUT — SECTION 05
+       ============================================================ */
+    .section-about {
+      background: var(--white);
+      position: relative;
+    }
+
+    /* Side stripe left */
+    .section-about::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 8px;
+      background: linear-gradient(180deg, var(--red) 33%, var(--white) 33% 66%, var(--navy) 66%);
+    }
+
+    .about-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 18px 60px 32px;
+    }
+
+    .about-eyebrow {
+      font-family: 'Teko', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 14px;
+    }
+
+    .about-h2 {
+      font-size: 36px;
+      color: var(--ink);
+      margin-bottom: 24px;
+    }
+    .about-h2 em {
+      font-style: normal;
+      color: var(--red);
+      font-size: 1.3em;
+    }
+
+    .about-body {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #3A3A52;
+      max-width: 520px;
+      margin-bottom: 16px;
+    }
+
+    /* Owner card */
+    .owner-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--off);
+      border-left: 3px solid var(--red);
+      padding: 18px 20px;
+      margin-top: 28px;
+      max-width: 400px;
+    }
+    .owner-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--navy-dark);
+      border: 2px solid var(--gold);
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 20px;
+      color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .owner-name {
+      font-family: 'Teko', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      text-transform: uppercase;
+    }
+    .owner-title {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 12px;
+      font-style: italic;
+      color: var(--slate);
+    }
+
+    /* About photo placeholders */
+    .about-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 32px;
+    }
+    .about-photo-placeholder {
+      height: 140px;
+      background: linear-gradient(160deg, #3E2810, #1A0E04);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .photo-label {
+      font-family: 'Teko', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: rgba(245,240,232,0.2);
+      text-transform: uppercase;
+      text-align: center;
+      padding: 8px;
+    }
+
+    /* ============================================================
+       SERVICES — SECTION 06
+       ============================================================ */
+    .section-services {
+      background: var(--navy);
+      padding: 60px 18px;
+    }
+
+    .services-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .services-eyebrow {
+      font-family: 'Teko', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .services-h2 {
+      font-size: 36px;
+      color: var(--white);
+      margin-bottom: 40px;
+    }
+    .services-h2 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .svc-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-left: 4px solid var(--red);
+      padding: 18px 16px;
+      border-radius: 0 2px 2px 0;
+      margin-bottom: 10px;
+      text-decoration: none;
+      transition: background 0.2s, border-left-color 0.2s, transform 0.2s cubic-bezier(0.16,1,0.3,1);
+    }
+    .svc-item:last-child { margin-bottom: 0; }
+    .svc-item:hover {
+      background: rgba(255,255,255,0.08);
+      border-left-color: var(--gold);
+      transform: translateX(4px);
+    }
+
+    .svc-num {
+      font-family: 'Teko', sans-serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: rgba(212,175,55,0.3);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 32px;
+    }
+
+    .svc-body { flex: 1; }
+    .svc-name {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 17px;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .svc-arrow {
+      color: var(--gold);
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+    .svc-item:hover .svc-arrow { transform: translateX(4px); }
+
+    .svc-desc {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(245,240,232,0.5);
+      margin-top: 6px;
+    }
+
+    /* ============================================================
+       PROMISE — SECTION 07
+       ============================================================ */
+    .section-promise {
+      background: var(--red);
+      padding: 48px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Diagonal hatch */
+    .section-promise::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(255,255,255,0.03) 0,
+        rgba(255,255,255,0.03) 1px,
+        transparent 1px,
+        transparent 8px
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .promise-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .promise-stars {
+      font-size: 14px;
+      color: rgba(245,240,232,0.7);
+      letter-spacing: 4px;
+      margin-bottom: 14px;
+    }
+
+    .promise-h2 {
+      font-size: 36px;
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+
+    .checklist { margin-bottom: 40px; }
+
+    .check-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .check-circle {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 11px;
+      color: var(--white);
+      margin-top: 2px;
+    }
+    .check-title {
+      font-family: 'Teko', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+    .check-desc {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 13px;
+      font-style: italic;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+      margin-top: 2px;
+    }
+
+    /* Warranty box */
+    .warranty-box {
+      background: var(--navy-dark);
+      border: 3px solid var(--gold);
+      border-radius: 2px;
+      padding: 40px 28px;
+      text-align: center;
+      position: relative;
+    }
+    .warranty-star-deco {
+      position: absolute;
+      top: -14px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--navy-dark);
+      padding: 0 12px;
+      color: var(--gold);
+      font-size: 16px;
+      letter-spacing: 4px;
+    }
+    .warranty-word {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 52px;
+      text-transform: uppercase;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .warranty-sub {
+      font-family: 'Teko', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      margin-bottom: 18px;
+    }
+    .warranty-desc {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(245,240,232,0.65);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       PORTFOLIO PREVIEW — SECTION 08
+       ============================================================ */
+    .section-portfolio {
+      background: var(--navy-dark);
+      padding: 60px 18px;
+    }
+
+    .port-header {
+      max-width: 1200px;
+      margin: 0 auto 28px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .port-tag {
+      font-family: 'Teko', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .port-h2 {
+      font-size: 34px;
+      color: var(--white);
+    }
+    .port-h2 em {
+      font-style: normal;
+      color: var(--red);
+    }
+
+    .port-view-all {
+      font-family: 'Teko', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.45);
+      align-self: flex-end;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .port-view-all:hover { color: var(--gold); }
+
+    /* Filter tabs */
+    .port-filters {
+      max-width: 1200px;
+      margin: 0 auto 24px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .port-filters::-webkit-scrollbar { display: none; }
+
+    .port-filter {
+      font-family: 'Teko', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 2px;
+      color: rgba(245,240,232,0.45);
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .port-filter.active,
+    .port-filter:hover {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--white);
+    }
+
+    /* Portfolio grid — mobile 2-col */
+    .port-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      gap: 10px;
+    }
+
+    /* Featured item spans full width on mobile */
+    .port-item.featured {
+      grid-column: 1 / -1;
+      height: 220px;
+    }
+    .port-item {
+      height: 160px;
+      position: relative;
+      border-radius: 2px;
+    }
+
+    .port-bg {
+      position: absolute; inset: 0;
+      border-radius: 2px;
+    }
+
+    /* Placeholder gradients for each project */
+    .port-bg-1 { background: linear-gradient(160deg, #2C3E50, #1A252F); }
+    .port-bg-2 { background: linear-gradient(160deg, #3E2810, #1A0E04); }
+    .port-bg-3 { background: linear-gradient(160deg, #1A3A1A, #0A1A0A); }
+    .port-bg-4 { background: linear-gradient(160deg, #2A2A3E, #10101A); }
+    .port-bg-5 { background: linear-gradient(160deg, #3E3A10, #1A1804); }
+
+    .port-overlay-content {
+      padding: 16px 14px;
+    }
+    .port-name {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 15px;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .port-tag-label {
+      font-family: 'Teko', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 3px;
+    }
+
+    /* ============================================================
+       REVIEWS — SECTION 09
+       ============================================================ */
+    .section-reviews {
+      background: var(--off);
+      padding: 60px 18px;
+    }
+
+    .reviews-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .reviews-eyebrow {
+      font-family: 'Teko', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+
+    .reviews-h2 {
+      font-size: 36px;
+      color: var(--ink);
+      margin-bottom: 36px;
+    }
+    .reviews-h2 em { font-style: normal; color: var(--red); }
+
+    .reviews-carousel-wrapper {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      margin-bottom: 24px;
+      mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+    }
+
+    .reviews-track {
+      display: flex;
+      gap: 20px;
+      width: max-content;
+      will-change: transform;
+    }
+
+    .review-card {
+      background: var(--white);
+      border-top: 5px solid var(--navy-dark);
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+      flex: 0 0 85vw;
+    }
+    .review-quote-deco {
+      position: absolute;
+      top: 8px; right: 16px;
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 64px;
+      color: var(--navy);
+      opacity: 0.05;
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+    }
+    .review-stars {
+      color: var(--gold);
+      font-size: 13px;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+    .review-text {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 14px;
+      font-style: italic;
+      line-height: 1.75;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .review-author {
+      font-family: 'Teko', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+
+    /* ============================================================
+       SERVICE AREA — SECTION 10
+       ============================================================ */
+    .section-area {
+      background: var(--white);
+      padding: 60px 18px;
+      position: relative;
+    }
+
+    /* Side stripe RIGHT edge */
+    .section-area::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 8px;
+      background: linear-gradient(180deg, var(--red) 33%, var(--white) 33% 66%, var(--navy) 66%);
+    }
+
+    .area-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-right: 16px;
+    }
+
+    /* Map placeholder */
+    .area-map {
+      height: 260px;
+      background: linear-gradient(160deg, #1B2A4A, #0F1825);
+      border-radius: 2px;
+      border: 2px solid rgba(27,42,74,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .area-map-icon { font-size: 36px; opacity: 0.4; }
+    .area-map-label {
+      font-family: 'Teko', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.2);
+    }
+
+    /* Map pins */
+    .map-pin {
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 0 3px rgba(192,57,43,0.2);
+      position: absolute;
+    }
+
+    .area-eyebrow {
+      font-family: 'Teko', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+
+    .area-h2 {
+      font-size: 36px;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .area-h2 em { font-style: normal; color: var(--red); }
+
+    .area-body {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #3A3A52;
+      max-width: 440px;
+      margin-bottom: 20px;
+    }
+
+    .town-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .town-pill {
+      background: var(--off);
+      border: 1px solid rgba(27,42,74,0.12);
+      border-radius: 2px;
+      font-family: 'Teko', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--navy);
+      padding: 5px 12px;
+    }
+
+    /* ============================================================
+       CONTACT CTA — SECTION 11
+       ============================================================ */
+    .section-contact {
+      background: var(--navy);
+      padding: 60px 18px 80px;
+      position: relative;
+    }
+
+    /* RWB footer stripe */
+    .section-contact::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 7px;
+      background: linear-gradient(90deg, var(--red) 33%, var(--white) 33% 66%, var(--navy-dark) 66%);
+    }
+
+    .contact-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .contact-eyebrow {
+      font-family: 'Teko', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .contact-h2 {
+      font-size: 36px;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+    .contact-h2 em { font-style: normal; color: var(--red); }
+
+    .contact-body {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 14px;
+      line-height: 1.8;
+      color: rgba(245,240,232,0.6);
+      max-width: 440px;
+      margin-bottom: 24px;
+    }
+
+    .contact-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px; }
+
+    .contact-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-left: 4px solid var(--red);
+      border-radius: 0 2px 2px 0;
+      padding: 14px 16px;
+      color: var(--white);
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .contact-btn:hover { background: rgba(255,255,255,0.1); }
+
+    .contact-icon { font-size: 18px; flex-shrink: 0; }
+    .contact-label {
+      font-family: 'Teko', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.35);
+    }
+    .contact-value {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 16px;
+      color: var(--white);
+      letter-spacing: 0.03em;
+    }
+
+    /* Estimate form */
+    .estimate-form-wrap {
+      background: var(--navy-dark);
+      border-top: 5px solid var(--gold);
+      padding: 32px 24px;
+    }
+
+    .form-title {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .form-subtitle {
+      font-family: 'Teko', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      color: var(--slate);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .form-grid { display: grid; gap: 14px; }
+    .form-grid-2 { grid-template-columns: 1fr 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+
+    .form-label {
+      font-family: 'Teko', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(212,175,55,0.55);
+      transition: color 0.2s;
+    }
+    .form-group:focus-within .form-label { color: var(--gold); }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 2px;
+      padding: 11px 13px;
+      color: var(--white);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
+    }
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: rgba(245,240,232,0.2);
+    }
+    .form-textarea { min-height: 88px; resize: vertical; }
+
+    .form-submit-wrap {
+      position: relative;
+      display: block;
+      margin-top: 8px;
+    }
+
+    .form-submit {
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border: none;
+      border-bottom: 3px solid rgba(0,0,0,0.22);
+      border-radius: 2px;
+      cursor: pointer;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .form-submit::before {
+      content: '';
+      position: absolute; top: 0; left: -120%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+    }
+    .form-submit:hover::before { animation: shimmer 0.6s ease forwards; }
+    .form-submit:active { transform: translateY(1px); }
+
+    /* ============================================================
+       FOOTER — SECTION 12
+       ============================================================ */
+    .footer {
+      background: var(--near-black);
+      border-top: 5px solid var(--red);
+      padding: 40px 18px 24px;
+    }
+
+    .footer-rwb {
+      display: flex;
+      height: 4px;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 36px;
+    }
+    .footer-rwb span { flex: 1; }
+    .footer-rwb span:nth-child(1) { background: var(--red); }
+    .footer-rwb span:nth-child(2) { background: var(--white); }
+    .footer-rwb span:nth-child(3) { background: var(--navy); }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px 24px;
+      margin-bottom: 36px;
+    }
+
+    .footer-brand { grid-column: 1 / -1; }
+
+    .footer-logo {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 20px;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .footer-logo em { color: var(--gold); font-style: normal; }
+
+    .footer-tagline {
+      font-family: 'Teko', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(212,175,55,0.5);
+      margin-bottom: 8px;
+    }
+
+    .footer-desc {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 12px;
+      font-style: italic;
+      color: rgba(245,240,232,0.28);
+      line-height: 1.7;
+      max-width: 320px;
+    }
+
+    .footer-col-title {
+      font-family: 'Teko', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(212,175,55,0.55);
+      margin-bottom: 12px;
+    }
+
+    .footer-links { display: flex; flex-direction: column; gap: 8px; }
+    .footer-link {
+      font-family: 'Teko', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: rgba(245,240,232,0.35);
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-link:hover { color: var(--white); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .footer-copy, .footer-badges {
+      font-family: 'Teko', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(245,240,232,0.15);
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       DESKTOP — @media (min-width: 768px)
+       ============================================================ */
+    @media (min-width: 768px) {
+
+      /* Navigation */
+      .nav { height: 76px; }
+
+      .nav-hamburger   { display: none; }
+      .nav-mobile-cta  { display: none; }
+      .nav-links       { display: flex; align-items: center; gap: 28px; }
+      .nav-right       { display: flex; align-items: center; gap: 20px; }
+
+      .nav-inner { padding: 0 32px; }
+
+      .nav-logo-wrap { text-align: left; }
+      .nav-logo { font-size: 24px; }
+      .nav-logo-sub { display: block; }
+
+      .nav-link {
+        font-family: 'Teko', sans-serif;
+        font-size: 14px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(245,240,232,0.55);
+        position: relative;
+        padding-bottom: 3px;
+        transition: color 0.2s;
+      }
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0;
+        height: 1.5px;
+        width: 0;
+        background: var(--red);
+        transition: width 0.22s cubic-bezier(0.16,1,0.3,1);
+      }
+      .nav-link:hover { color: var(--white); }
+      .nav-link:hover::after { width: 100%; }
+
+      .nav-phone-wrap { text-align: right; }
+      .nav-phone {
+        font-family: 'Fjalla One', sans-serif;
+        font-size: 20px;
+        color: var(--white);
+        line-height: 1;
+      }
+      .nav-phone-label {
+        font-family: 'Teko', sans-serif;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        color: rgba(245,240,232,0.3);
+        text-transform: uppercase;
+      }
+
+      /* Hero — 50/50 split */
+      .hero {
+        flex-direction: row;
+        min-height: 88vh;
+        max-height: 900px;
+      }
+
+      .hero-content {
+        flex: 1;
+        padding: 80px 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .hero-h1 { font-size: 62px; }
+
+      .hero-canton { display: grid; width: 140px; height: 110px; opacity: 0.4; }
+
+      .hero-ctas {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .hero-ctas .btn-primary,
+      .hero-ctas .btn-ghost-red { width: auto; }
+
+      /* Stats row — absolute bottom on desktop */
+      .hero-trust {
+        position: absolute;
+        bottom: 40px; left: 64px; right: 64px;
+        margin-top: 0;
+        padding-top: 18px;
+        justify-content: space-between;
+      }
+      .hero-stat { flex-shrink: 1; }
+      .hero-stat-num { font-size: 26px; }
+
+      /* Photo panel */
+      .hero-photo-wrap {
+        flex: 1;
+        width: auto;
+        height: auto;
+        min-height: 88vh;
+        max-height: 900px;
+      }
+
+      #hero-stamp {
+        width: 96px; height: 96px;
+        bottom: 52px; left: -28px;
+        font-size: inherit;
+      }
+      .stamp-text { font-size: 12px; }
+
+      /* About */
+      .about-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .about-left {
+        padding: 80px 64px 80px 40px;
+      }
+
+      .about-right {
+        background: linear-gradient(160deg, #3E2810, #1A0E04);
+        padding: 32px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      .about-photos {
+        width: 100%;
+        height: 100%;
+        align-content: flex-start;
+      }
+      .about-photo-placeholder { height: calc(50% - 5px); min-height: 180px; }
+
+      /* Services */
+      .section-services { padding: 80px 64px; }
+      .services-h2 { font-size: 42px; }
+      .services-h2, .services-eyebrow { max-width: 600px; }
+
+      /* Promise */
+      .section-promise { padding: 80px 64px; }
+      .promise-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: start;
+      }
+      .promise-h2 { font-size: 42px; }
+
+      /* Portfolio */
+      .section-portfolio { padding: 80px 64px; }
+      .port-grid {
+        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-rows: 240px 240px;
+      }
+      .port-item.featured {
+        grid-column: 1;
+        grid-row: 1 / 3;
+        height: 100%;
+      }
+      .port-item { height: 100%; }
+
+      /* Reviews */
+      .section-reviews { padding: 80px 64px; }
+      .reviews-carousel-wrapper { margin-bottom: 24px; }
+      .review-card { flex: 0 0 340px; }
+
+      /* Area */
+      .section-area { padding: 80px 0 80px 64px; }
+      .area-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 72px;
+        align-items: center;
+        padding-right: 80px;
+      }
+      .area-map { height: 340px; margin-bottom: 0; }
+
+      /* Contact */
+      .section-contact { padding: 80px 64px 80px; }
+      .contact-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: start;
+      }
+      .contact-options { margin-bottom: 0; }
+
+      /* Footer */
+      .footer { padding: 52px 64px 28px; }
+      .footer-grid {
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+      }
+      .footer-brand { grid-column: auto; }
+      .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; }
+    }
+
+    /* ============================================================
+       LARGE DESKTOP — @media (min-width: 1100px)
+       ============================================================ */
+    @media (min-width: 1100px) {
+      .hero-h1 { font-size: 72px; }
+      .hero-content { padding: 80px 72px; }
+      .hero-trust { left: 72px; right: 72px; }
+    }
+
+    /* ============================================================
+       REDUCED MOTION
+       ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       SECTION 01 — MOBILE MENU OVERLAY
+       ============================================================ -->
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+    <button class="mobile-menu-close" id="menu-close" aria-label="Close menu">&times;</button>
+    <a href="portfolio.html">Our Work</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About Jeramie</a>
+    <a href="contact.html">Contact</a>
+    <div class="mobile-menu-phone">(419) 231-0111</div>
+    <a href="contact.html" class="mobile-menu-cta">★ Free Estimate</a>
+  </div>
+
+  <!-- ============================================================
+       SECTION 02 — NAVIGATION
+       ============================================================ -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+
+      <!-- Mobile: hamburger -->
+      <button class="nav-hamburger" id="menu-open" aria-label="Open navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <!-- Logo -->
+      <div class="nav-logo-wrap">
+        <div class="nav-logo">Small<em>Town</em> Windows</div>
+        <div class="nav-logo-rule"></div>
+        <div class="nav-logo-sub">★ Northwest Ohio's Trusted Installer ★</div>
+      </div>
+
+      <!-- Desktop nav links -->
+      <div class="nav-links">
+        <a href="index.html"     class="nav-link">Home</a>
+        <a href="portfolio.html" class="nav-link">Our Work</a>
+        <a href="services.html"  class="nav-link">Services</a>
+        <a href="about.html"     class="nav-link">About Jeramie</a>
+      </div>
+
+      <!-- Desktop right: phone + CTA -->
+      <div class="nav-right">
+        <div class="nav-phone-wrap">
+          <div class="nav-phone">(419) 231-0111</div>
+          <div class="nav-phone-label">Call or Text</div>
+        </div>
+        <a href="contact.html" class="btn-primary" style="padding:10px 20px;font-size:13px;">★ Free Estimate</a>
+      </div>
+
+      <!-- Mobile CTA -->
+      <a href="contact.html" class="nav-mobile-cta">Estimate</a>
+
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       SECTION 03 — HERO
+       ============================================================ -->
+  <section class="hero">
+
+    <!-- Left / content block (stacks below photo on mobile) -->
+    <div class="hero-content">
+
+      <!-- Canton stars decoration -->
+      <div class="hero-canton" aria-hidden="true">
+        ★★★★★★★★★★★★★★★★★★★★★★★★★
+      </div>
+
+      <!-- Right-edge stripes -->
+      <div class="hero-stripes" aria-hidden="true">
+        <div class="hero-stripe"></div>
+        <div class="hero-stripe"></div>
+        <div class="hero-stripe"></div>
+        <div class="hero-stripe"></div>
+        <div class="hero-stripe"></div>
+      </div>
+
+      <!-- Eyebrow -->
+      <div class="hero-eyebrow" id="hero-eyebrow">
+        Serving Northwest Ohio Since Day One
+      </div>
+
+      <!-- H1 — word march -->
+      <h1 class="hero-h1">
+        <span class="word"><span class="word-inner">Your Neighbor.</span></span>
+        <span class="word"><span class="word-inner red">Your</span></span>
+        <span class="word"><span class="word-inner gold">Window Guy.</span></span>
+      </h1>
+
+      <!-- Sub -->
+      <p class="hero-sub" id="hero-sub">
+        Custom energy-efficient windows installed with craftsman precision — backed by a lifetime transferable warranty and a promise to treat your home like our own.
+      </p>
+
+      <!-- CTAs -->
+      <div class="hero-ctas" id="hero-ctas">
+        <div class="cta-wrap" id="hero-cta-wrap">
+          <div class="pulse-ring" aria-hidden="true"></div>
+          <div class="pulse-ring-2" aria-hidden="true"></div>
+          <a href="contact.html" class="btn-primary">★ Schedule Free Estimate</a>
+        </div>
+        <a href="portfolio.html" class="btn-ghost-red">See Our Work ↓</a>
+      </div>
+
+      <!-- RWB Rule -->
+      <div class="hero-rule" id="hero-rule" aria-hidden="true"></div>
+
+      <!-- Stats row -->
+      <div class="hero-trust" id="hero-trust">
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="stat-stars">5.0</div>
+          <div class="hero-stat-label">Google Reviews</div>
+        </div>
+        <div class="hero-stat-sep" aria-hidden="true"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="stat-homes">100+</div>
+          <div class="hero-stat-label">Homes Served</div>
+        </div>
+        <div class="hero-stat-sep" aria-hidden="true"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">BBB A+</div>
+          <div class="hero-stat-label">Accredited</div>
+        </div>
+        <div class="hero-stat-sep" aria-hidden="true"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">∞</div>
+          <div class="hero-stat-label">Lifetime Warranty</div>
+        </div>
+      </div>
+
+    </div><!-- /hero-content -->
+
+    <!-- Right / photo panel -->
+    <div class="hero-photo-wrap" id="hero-photo">
+      <img src="draft-images/hero-home.webp" alt="A-frame home with floor-to-ceiling windows installed by Small Town Windows, Northwest Ohio" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
+
+      <!-- Stamp overlay -->
+      <div class="hero-stamp" id="hero-stamp" aria-label="5 stars, 100% satisfied">
+        <div class="stamp-stars">★★★★★</div>
+        <div class="stamp-text">100%<br>Satisfied</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       SECTION 05 — ABOUT / STORY
+       ============================================================ -->
+  <section class="section-about">
+    <div class="about-inner">
+
+      <!-- Left: content -->
+      <div class="about-left">
+        <div class="about-eyebrow" data-reveal>The Story Behind the Name</div>
+
+        <h2 class="about-h2" data-reveal>
+          Small town values.<br>
+          <em>Big-city craft.</em>
+        </h2>
+
+        <p class="about-body" data-reveal>
+          Jeramie built Small Town Windows on a simple idea: your neighbors deserve the same quality workmanship that big-city homeowners pay twice the price for. Every window we install, we treat like it's going into our own home.
+        </p>
+
+        <p class="about-body" data-reveal>
+          Because around here, we'll see you at the grocery store — and our reputation means everything.
+        </p>
+
+        <div class="owner-card" data-reveal>
+          <div class="owner-avatar" aria-hidden="true">J</div>
+          <div>
+            <div class="owner-name">Jeramie — Owner &amp; Installer</div>
+            <div class="owner-title">Calling Northwest Ohio home since birth.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: photos -->
+      <div class="about-right">
+        <div class="about-photos">
+          <div class="about-photo-placeholder">
+            <img src="draft-images/window-double-hung-interior.webp" alt="Finished double-hung window installation by Small Town Windows overlooking a Northwest Ohio yard" style="width:100%;height:100%;object-fit:cover;display:block;">
+          </div>
+          <div class="about-photo-placeholder">
+            <img src="draft-images/window-bathroom-install.webp" alt="Freshly installed bathroom window by Small Town Windows, Northwest Ohio" style="width:100%;height:100%;object-fit:cover;display:block;">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 06 — SERVICES
+       ============================================================ -->
+  <section class="section-services">
+    <div class="services-inner">
+
+      <div class="services-eyebrow" data-reveal>What We Do</div>
+
+      <h2 class="services-h2" data-reveal>
+        Windows done right,<br>
+        <em>start to finish.</em>
+      </h2>
+
+      <div>
+        <a href="services.html" class="svc-item" data-reveal-left>
+          <div class="svc-num">01</div>
+          <div class="svc-body">
+            <div class="svc-name">
+              Window Replacement
+              <span class="svc-arrow" aria-hidden="true">→</span>
+            </div>
+            <div class="svc-desc">
+              Custom-fit replacements for homes of all ages. We measure twice, install once, and clean up completely.
+            </div>
+          </div>
+        </a>
+
+        <a href="services.html" class="svc-item" data-reveal-left>
+          <div class="svc-num">02</div>
+          <div class="svc-body">
+            <div class="svc-name">
+              Energy-Efficient Glass
+              <span class="svc-arrow" aria-hidden="true">→</span>
+            </div>
+            <div class="svc-desc">
+              Low-E coatings and argon-fill insulation that cut your heating and cooling bills season after season.
+            </div>
+          </div>
+        </a>
+
+        <a href="services.html" class="svc-item" data-reveal-left>
+          <div class="svc-num">03</div>
+          <div class="svc-body">
+            <div class="svc-name">
+              New Construction
+              <span class="svc-arrow" aria-hidden="true">→</span>
+            </div>
+            <div class="svc-desc">
+              Working with builders from framing to final inspection. We fit your schedule and your vision.
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 07 — PROMISE
+       ============================================================ -->
+  <section class="section-promise" id="section-promise">
+    <div class="promise-inner">
+
+      <!-- Left: checklist -->
+      <div class="promise-left">
+        <div class="promise-stars" aria-label="5 stars">★ ★ ★ ★ ★</div>
+
+        <h2 class="promise-h2" data-reveal>
+          We don't just install windows.<br>
+          We earn trust.
+        </h2>
+
+        <div class="checklist">
+
+          <div class="check-item" data-reveal>
+            <div class="check-circle" aria-hidden="true">✓</div>
+            <div>
+              <div class="check-title">Transparent, Itemized Pricing</div>
+              <div class="check-desc">Clear price before any work begins. No surprises, ever.</div>
+            </div>
+          </div>
+
+          <div class="check-item" data-reveal>
+            <div class="check-circle" aria-hidden="true">✓</div>
+            <div>
+              <div class="check-title">Clean Worksite Guaranteed</div>
+              <div class="check-desc">We leave your home cleaner than we found it. Every time.</div>
+            </div>
+          </div>
+
+          <div class="check-item" data-reveal>
+            <div class="check-circle" aria-hidden="true">✓</div>
+            <div>
+              <div class="check-title">Same-Day Communication</div>
+              <div class="check-desc">We communicate clearly and promptly — every step of the way.</div>
+            </div>
+          </div>
+
+          <div class="check-item" data-reveal>
+            <div class="check-circle" aria-hidden="true">✓</div>
+            <div>
+              <div class="check-title">Lifetime Transferable Warranty</div>
+              <div class="check-desc">Fully transferable to the next owner — real added value to your home.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: warranty box -->
+      <div class="promise-right" data-reveal>
+        <div class="warranty-box">
+          <div class="warranty-star-deco" aria-hidden="true">★ ★ ★</div>
+          <div class="warranty-word">Lifetime</div>
+          <div class="warranty-sub">★ Fully Transferable Warranty on Every Install ★</div>
+          <div class="warranty-desc">
+            We'll come to you, measure your windows, walk you through your options, and give you a clear price — no pressure, no sales tactics. Just a neighbor giving you an honest answer.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 08 — PORTFOLIO PREVIEW
+       ============================================================ -->
+  <section class="section-portfolio">
+
+    <div class="port-header">
+      <div>
+        <div class="port-tag">Our Work</div>
+        <h2 class="port-h2">Homes We've <em>Transformed.</em></h2>
+      </div>
+      <a href="portfolio.html" class="port-view-all">View Full Gallery →</a>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="port-filters" role="tablist" aria-label="Portfolio filters">
+      <button class="port-filter active" role="tab" aria-selected="true">All Projects</button>
+      <button class="port-filter" role="tab" aria-selected="false">Replacement</button>
+      <button class="port-filter" role="tab" aria-selected="false">Energy Upgrade</button>
+      <button class="port-filter" role="tab" aria-selected="false">Custom Style</button>
+      <button class="port-filter" role="tab" aria-selected="false">Storm Windows</button>
+    </div>
+
+    <!-- Portfolio grid -->
+    <div class="port-grid">
+
+      <!-- 1. Featured — Victorian Restoration -->
+      <div class="port-item featured" data-reveal>
+        <img class="port-bg" src="draft-images/project-colonial-home.webp" alt="Full window replacement on a colonial home by Small Town Windows in Defiance, Ohio" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="port-flag" aria-hidden="true">
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+        </div>
+        <div class="port-overlay">
+          <div class="port-overlay-content">
+            <div class="port-name">Victorian Restoration</div>
+            <div class="port-tag-label">Defiance, OH · 8 Windows</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Ranch Upgrade -->
+      <div class="port-item" data-reveal>
+        <img class="port-bg" src="draft-images/project-rear-windows.webp" alt="Multi-window ranch home upgrade by Small Town Windows in Hicksville, Ohio" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="port-flag" aria-hidden="true">
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+        </div>
+        <div class="port-overlay">
+          <div class="port-overlay-content">
+            <div class="port-name">Ranch Upgrade</div>
+            <div class="port-tag-label">Hicksville, OH</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. New Build Install -->
+      <div class="port-item" data-reveal>
+        <img class="port-bg" src="draft-images/project-patio-door.webp" alt="New patio door installation by Small Town Windows in Bryan, Ohio" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="port-flag" aria-hidden="true">
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+        </div>
+        <div class="port-overlay">
+          <div class="port-overlay-content">
+            <div class="port-name">New Build Install</div>
+            <div class="port-tag-label">Bryan, OH</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Full Re-Window -->
+      <div class="port-item" data-reveal>
+        <img class="port-bg" src="draft-images/project-lakefront-exterior.webp" alt="Full re-window on a lakefront home by Small Town Windows in Paulding, Ohio" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="port-flag" aria-hidden="true">
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+        </div>
+        <div class="port-overlay">
+          <div class="port-overlay-content">
+            <div class="port-name">Full Re-Window</div>
+            <div class="port-tag-label">Paulding, OH</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Energy Upgrade -->
+      <div class="port-item" data-reveal>
+        <img class="port-bg" src="draft-images/window-casement-farmland.webp" alt="Energy-efficient casement window installed by Small Town Windows in Napoleon, Ohio, overlooking farmland" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="port-flag" aria-hidden="true">
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+          <div class="port-flag-stripe"></div>
+        </div>
+        <div class="port-overlay">
+          <div class="port-overlay-content">
+            <div class="port-name">Energy Upgrade</div>
+            <div class="port-tag-label">Napoleon, OH</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 09 — REVIEWS
+       ============================================================ -->
+  <section class="section-reviews">
+    <div class="reviews-inner">
+
+      <div class="reviews-eyebrow" data-reveal>What Neighbors Are Saying</div>
+
+      <h2 class="reviews-h2" data-reveal>
+        Real reviews.<br>
+        <em>Real neighbors.</em>
+      </h2>
+
+      <div class="reviews-carousel-wrapper">
+        <div class="reviews-track" id="reviews-track">
+
+          <div class="review-card">
+            <div class="review-quote-deco" aria-hidden="true">"</div>
+            <div class="review-stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">
+              "Jeramie showed up when he said he would, kept us informed the whole way, and left our home spotless."
+            </p>
+            <div class="review-author">Sarah M. — Defiance, OH</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-quote-deco" aria-hidden="true">"</div>
+            <div class="review-stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">
+              "Energy savings were noticeable after the very first month. The quality of the installation is flawless."
+            </p>
+            <div class="review-author">Mike &amp; Linda T. — Bryan, OH</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-quote-deco" aria-hidden="true">"</div>
+            <div class="review-stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">
+              "Honest, straightforward advice from a guy who genuinely knows his craft. No pushy sales tactics."
+            </p>
+            <div class="review-author">Dave K. — Napoleon, OH</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-quote-deco" aria-hidden="true">"</div>
+            <div class="review-stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">
+              "From the first call to the final cleanup, everything was professional and on time. Our new windows look incredible."
+            </p>
+            <div class="review-author">Tom R. — Wauseon, OH</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-quote-deco" aria-hidden="true">"</div>
+            <div class="review-stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">
+              "Jeramie gave us a fair price, explained everything clearly, and the crew was in and out in one day. Highly recommend."
+            </p>
+            <div class="review-author">Lisa &amp; Mark B. — Archbold, OH</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-quote-deco" aria-hidden="true">"</div>
+            <div class="review-stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">
+              "Best home improvement experience we've ever had. No surprises, no mess, no stress."
+            </p>
+            <div class="review-author">Rick D. — Paulding, OH</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 10 — SERVICE AREA
+       ============================================================ -->
+  <section class="section-area">
+    <div class="area-inner">
+
+      <!-- Map placeholder -->
+      <div class="area-map" aria-label="Service area map placeholder">
+        <!-- Map pins -->
+        <div class="map-pin" style="top:28%;left:38%;" aria-hidden="true"></div>
+        <div class="map-pin" style="top:45%;left:22%;" aria-hidden="true"></div>
+        <div class="map-pin" style="top:35%;left:60%;" aria-hidden="true"></div>
+        <div class="map-pin" style="top:62%;left:42%;" aria-hidden="true"></div>
+        <div class="map-pin" style="top:50%;left:72%;" aria-hidden="true"></div>
+        <div class="area-map-icon" aria-hidden="true">🗺️</div>
+        <div class="area-map-label">[ Interactive Service Area Map ]</div>
+      </div>
+
+      <!-- Copy -->
+      <div class="area-copy">
+        <div class="area-eyebrow" data-reveal>Where We Work</div>
+
+        <h2 class="area-h2" data-reveal>
+          Proudly serving<br>
+          <em>Northwest Ohio.</em>
+        </h2>
+
+        <p class="area-body" data-reveal>
+          We'll come to you — no travel fees, no out-of-town crews. Just local folks doing quality work in the communities we call home.
+        </p>
+
+        <div class="town-pills" data-reveal>
+          <span class="town-pill">Defiance</span>
+          <span class="town-pill">Hicksville</span>
+          <span class="town-pill">Bryan</span>
+          <span class="town-pill">Paulding</span>
+          <span class="town-pill">Montpelier</span>
+          <span class="town-pill">Wauseon</span>
+          <span class="town-pill">Napoleon</span>
+          <span class="town-pill">Archbold</span>
+          <span class="town-pill">+ More</span>
+        </div>
+
+        <a href="contact.html" class="btn-primary" style="background:var(--navy-dark);" data-reveal>
+          ★ View Full Service Area Map
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 11 — CONTACT CTA
+       ============================================================ -->
+  <section class="section-contact">
+    <div class="contact-inner">
+
+      <!-- Left: copy + contact options -->
+      <div class="contact-left">
+        <div class="contact-eyebrow" data-reveal>Get Started</div>
+
+        <h2 class="contact-h2" data-reveal>
+          Ready for new<br>
+          <em>windows?</em>
+        </h2>
+
+        <p class="contact-body" data-reveal>
+          We'll come to you, measure your windows, walk you through your options, and give you a clear price — no pressure, no sales tactics. Just a neighbor giving you an honest answer.
+        </p>
+
+        <div class="contact-options" data-reveal>
+          <a href="tel:4192310111" class="contact-btn">
+            <div class="contact-icon" aria-hidden="true">📞</div>
+            <div>
+              <div class="contact-label">Call or Text</div>
+              <div class="contact-value">(419) 231-0111</div>
+            </div>
+          </a>
+
+          <a href="mailto:smalltownwindows@gmail.com" class="contact-btn">
+            <div class="contact-icon" aria-hidden="true">✉️</div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value">smalltownwindows@gmail.com</div>
+            </div>
+          </a>
+
+          <div class="contact-btn">
+            <div class="contact-icon" aria-hidden="true">⏱</div>
+            <div>
+              <div class="contact-label">Hours</div>
+              <div class="contact-value">Mon–Sat, 7am–7pm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: estimate form -->
+      <div class="estimate-form-wrap" data-reveal>
+        <div class="form-title">★ Request a Free Estimate</div>
+        <div class="form-subtitle">No commitment. No pressure. Just an honest quote.</div>
+
+        <!-- Form submits to # for pitch — wire up backend before going live -->
+        <form action="#" method="POST" class="form-grid" novalidate>
+
+          <div class="form-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="form-group">
+              <label class="form-label" for="first-name">First Name</label>
+              <input class="form-input" type="text" id="first-name" name="first_name" placeholder="Jeramie" autocomplete="given-name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="last-name">Last Name</label>
+              <input class="form-input" type="text" id="last-name" name="last_name" placeholder="Smith" autocomplete="family-name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="phone">Phone Number</label>
+            <input class="form-input" type="tel" id="phone" name="phone" placeholder="(419) 000-0000" autocomplete="tel">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="city">City / Town</label>
+            <input class="form-input" type="text" id="city" name="city" placeholder="Defiance" autocomplete="address-level2">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="project">Tell Us About Your Project</label>
+            <textarea class="form-textarea" id="project" name="project" placeholder="We have 6 windows that need replacement..."></textarea>
+          </div>
+
+          <div style="position:relative;">
+            <div class="pulse-ring" aria-hidden="true" id="form-pulse-1"></div>
+            <div class="pulse-ring-2" aria-hidden="true" id="form-pulse-2"></div>
+            <button type="submit" class="form-submit">★ Send My Estimate Request →</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 12 — FOOTER
+       ============================================================ -->
+  <footer class="footer">
+
+    <!-- RWB stripe rule -->
+    <div class="footer-rwb" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+
+    <!-- Grid -->
+    <div class="footer-grid">
+
+      <!-- Brand col -->
+      <div class="footer-brand">
+        <div class="footer-logo">Small<em>Town</em> Windows</div>
+        <div class="footer-tagline">★ Installed once. Trusted for life. ★</div>
+        <div class="footer-desc">Serving Northwest Ohio with pride. Licensed &amp; Insured · BBB Accredited.</div>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <div class="footer-col-title">Services</div>
+        <nav class="footer-links" aria-label="Services links">
+          <a href="services.html" class="footer-link">Window Replacement</a>
+          <a href="services.html" class="footer-link">Energy-Efficient Glass</a>
+          <a href="services.html" class="footer-link">New Construction</a>
+          <a href="contact.html" class="footer-link">Free Estimates</a>
+        </nav>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <div class="footer-col-title">Company</div>
+        <nav class="footer-links" aria-label="Company links">
+          <a href="about.html"     class="footer-link">About Jeramie</a>
+          <a href="portfolio.html" class="footer-link">Our Work</a>
+          <a href="index.html"     class="footer-link">Reviews</a>
+          <a href="contact.html"   class="footer-link">Service Areas</a>
+        </nav>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <nav class="footer-links" aria-label="Contact links">
+          <a href="tel:4192310111" class="footer-link">(419) 231-0111</a>
+          <a href="mailto:smalltownwindows@gmail.com" class="footer-link">smalltownwindows@gmail.com</a>
+          <a href="https://g.page/r/" class="footer-link">★★★★★ Google</a>
+          <a href="https://www.bbb.org/" class="footer-link">BBB Accredited</a>
+        </nav>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Small Town Windows · All Rights Reserved</div>
+      <div class="footer-badges">🛡 BBB Accredited · A+ · ★ Lifetime Warranty</div>
+    </div>
+
+  </footer>
+
+  <!-- ============================================================
+       CUSTOM CURSOR
+       ============================================================ -->
+  <div id="cur-dot" aria-hidden="true"></div>
+  <div id="cur-ring" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       JAVASCRIPT — INLINE (PITCH PHASE)
+       ============================================================ -->
+  <script>
+    // ============================================================
+    // MOBILE MENU
+    // ============================================================
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOpen   = document.getElementById('menu-open');
+    const menuClose  = document.getElementById('menu-close');
+
+    menuOpen.addEventListener('click', () => {
+      mobileMenu.classList.add('open');
+      menuOpen.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('open');
+      menuOpen.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    menuClose.addEventListener('click', closeMobileMenu);
+
+    // Close on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+        closeMobileMenu();
+      }
+    });
+
+    // ============================================================
+    // PORTFOLIO FILTER TABS
+    // ============================================================
+    document.querySelectorAll('.port-filter').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.port-filter').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        this.classList.add('active');
+        this.setAttribute('aria-selected', 'true');
+      });
+    });
+
+    // ============================================================
+    // HERO LOAD SEQUENCE
+    // ============================================================
+    function runHeroSequence() {
+      const eyebrow   = document.getElementById('hero-eyebrow');
+      const words     = document.querySelectorAll('.word-inner');
+      const sub       = document.getElementById('hero-sub');
+      const ctas      = document.getElementById('hero-ctas');
+      const photo     = document.getElementById('hero-photo');
+      const stamp     = document.getElementById('hero-stamp');
+      const rule      = document.getElementById('hero-rule');
+      const trust     = document.getElementById('hero-trust');
+      const ctaWrap   = document.getElementById('hero-cta-wrap');
+
+      // Eyebrow 0.1s
+      setTimeout(() => {
+        eyebrow.style.opacity = '1';
+        eyebrow.style.transform = 'translateY(0)';
+      }, 100);
+
+      // Word 1: 0.2s
+      setTimeout(() => { words[0].style.transform = 'translateY(0)'; }, 200);
+      // Word 2: 0.32s
+      setTimeout(() => { words[1].style.transform = 'translateY(0)'; }, 320);
+      // Word 3: 0.44s
+      setTimeout(() => { words[2].style.transform = 'translateY(0)'; }, 440);
+
+      // Sub: 0.6s
+      setTimeout(() => {
+        sub.style.opacity = '1';
+        sub.style.transform = 'translateY(0)';
+      }, 600);
+
+      // CTAs: 0.9s
+      setTimeout(() => {
+        ctas.style.opacity = '1';
+        ctas.style.transform = 'translateY(0)';
+      }, 900);
+
+      // Photo: 0.3s
+      setTimeout(() => {
+        photo.style.opacity = '1';
+        photo.style.transform = 'translateX(0)';
+      }, 300);
+
+      // Stamp: 1.1s
+      setTimeout(() => {
+        stamp.style.opacity = '1';
+        stamp.style.transform = 'scale(1) rotate(0deg)';
+      }, 1100);
+
+      // Rule wipe: 1.4s
+      setTimeout(() => { rule.classList.add('wiped'); }, 1400);
+
+      // Trust items: 1.5s+
+      setTimeout(() => {
+        trust.style.opacity = '1';
+        trust.style.transform = 'translateY(0)';
+      }, 1500);
+
+      // CTA pulse: 2s delay (starts after 2s)
+      setTimeout(() => {
+        ctaWrap.classList.add('pulse-active');
+      }, 2000);
+    }
+
+    // Start load sequence on DOMContentLoaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', runHeroSequence);
+    } else {
+      runHeroSequence();
+    }
+
+    // ============================================================
+    // SCROLL REVEAL — IntersectionObserver
+    // ============================================================
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+
+    // Left-slide variant
+    const revealLeftObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealLeftObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('[data-reveal-left]').forEach(el => revealLeftObs.observe(el));
+
+    // ============================================================
+    // STAT COUNTER ROLL-UP
+    // ============================================================
+    function countUp(el, target, duration) {
+      if (!el) return;
+      const isFloat = !Number.isInteger(target);
+      let start = 0;
+      const step = target / (duration / 16);
+      const timer = setInterval(() => {
+        start = Math.min(start + step, target);
+        el.textContent = isFloat ? start.toFixed(1) : Math.floor(start);
+        if (start >= target) clearInterval(timer);
+      }, 16);
+    }
+
+
+    // ============================================================
+    // REVIEWS CAROUSEL — AUTO-SCROLL INFINITE LOOP
+    // ============================================================
+    (function() {
+      const track = document.getElementById('reviews-track');
+      if (!track) return;
+
+      // Clone all cards and append to create seamless infinite loop
+      const cards = Array.from(track.children);
+      cards.forEach(card => {
+        const clone = card.cloneNode(true);
+        track.appendChild(clone);
+      });
+
+      let pos = 0;
+      let paused = false;
+      const speed = 0.6; // px per frame
+
+      function autoScroll() {
+        if (!paused) {
+          pos += speed;
+          // When we've scrolled the width of the original set, reset to 0
+          const half = track.scrollWidth / 2;
+          if (pos >= half) pos = 0;
+          track.style.transform = `translateX(-${pos}px)`;
+        }
+        requestAnimationFrame(autoScroll);
+      }
+
+      // Pause on hover (desktop)
+      track.addEventListener('mouseenter', () => paused = true);
+      track.addEventListener('mouseleave', () => paused = false);
+
+      // Pause on touch (mobile)
+      track.addEventListener('touchstart', () => paused = true);
+      track.addEventListener('touchend', () => setTimeout(() => paused = false, 1500));
+
+      requestAnimationFrame(autoScroll);
+    })();
+
+    // ============================================================
+    // PROMISE SECTION STRIPE WIPE
+    // ============================================================
+    const promiseSection = document.getElementById('section-promise');
+    if (promiseSection) {
+      const promiseObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('wiped');
+            promiseObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      promiseObs.observe(promiseSection);
+    }
+
+    // ============================================================
+    // FORM SUBMIT PULSE
+    // ============================================================
+    setTimeout(() => {
+      const p1 = document.getElementById('form-pulse-1');
+      const p2 = document.getElementById('form-pulse-2');
+      if (p1) p1.style.animation = 'pulse-out 3s ease-in-out infinite';
+      if (p2) p2.style.animation = 'pulse-out 3s ease-in-out infinite 0.5s';
+    }, 4000);
+
+    // ============================================================
+    // GOLD CURSOR TRAILER
+    // ============================================================
+    (function() {
+      const dot  = document.getElementById('cur-dot');
+      const ring = document.getElementById('cur-ring');
+      if (!dot || !ring) return;
+
+      let mx = 0, my = 0, rx = 0, ry = 0;
+
+      document.addEventListener('mousemove', e => {
+        mx = e.clientX;
+        my = e.clientY;
+        dot.style.opacity  = '1';
+        ring.style.opacity = '1';
+      });
+
+      document.addEventListener('mouseleave', () => {
+        dot.style.opacity  = '0';
+        ring.style.opacity = '0';
+      });
+
+      (function loop() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        dot.style.left  = mx + 'px';
+        dot.style.top   = my + 'px';
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(loop);
+      })();
+
+      // Interactive elements: expand cursor on hover
+      document.querySelectorAll('a, button, .svc-item, .port-item, .review-card').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          dot.style.transform   = 'translate(-50%,-50%) scale(2.2)';
+          ring.style.width      = '52px';
+          ring.style.height     = '52px';
+          ring.style.borderColor = 'rgba(212,175,55,0.85)';
+        });
+        el.addEventListener('mouseleave', () => {
+          dot.style.transform   = 'translate(-50%,-50%) scale(1)';
+          ring.style.width      = '36px';
+          ring.style.height     = '36px';
+          ring.style.borderColor = 'rgba(212,175,55,0.5)';
+        });
+      });
+    })();
+
+  </script>
+
+</body>
+</html>
